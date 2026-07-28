@@ -1,15 +1,25 @@
-# @version:3.12
-me = Fight.me 
+me = Fight.me
 enemy = Fight.getNearestEnemy()
 
 if Fight.turn == 1:
     me.setWeapon(Weapon.pistol)
-    
-me.moveToward(enemy)
 
+if me.life < (me.maxLife - 50): 
+    if Chip.bandage in me.chips and me.canUseChip:
+        me.useChip(Chip.bandage)
 
-me.useWeapon(enemy)
-me.useWeapon(enemy)
-me.useWeapon(enemy)
+if enemy.distance(me) < 10:
+    for buff in [Chip.motivation, Chip.protein, Chip.helmet]:
+        if buff in me.chips and me.canUseChip:
+            me.useChip(buff)
+
+pistol_range = 7
+
+if enemy.distance(me) > pistol_range:
+    me.moveToward(enemy)
+
+for _ in range(3):
+    me.useWeapon(enemy)
     
-me.moveAwayFrom(enemy)
+if enemy.distance(me) <= pistol_range: 
+    me.moveAwayFrom(enemy)
